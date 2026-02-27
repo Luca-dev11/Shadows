@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Shadow Protocol</title>
+<style>
+body {
+    margin: 0;
+    background: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+}
+canvas {
+    background: #d9d9d9;
+    z-index: 1;
+}
+
+/* CONTROALE MOBILE */
+#mobileControls {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 2;
+    user-select: none;
+}
+.row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.button {
+    width: 60px;
+    height: 60px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    touch-action: none;
+}
+
+/* BUTON RESTART */
+#restartBtn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    padding: 20px 40px;
+    font-size: 24px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    display: none;
+    z-index: 3;
+}
+</style>
+</head>
+<body>
+<canvas id="gameCanvas" width="900" height="500"></canvas>
+
+<div id="mobileControls">
+    <div class="row"><div class="button" data-key="w">W</div></div>
+    <div class="row">
+        <div class="button" data-key="a">A</div>
+        <div class="button" data-key="s">S</div>
+        <div class="button" data-key="d">D</div>
+    </div>
+    <div class="row"><div class="button" data-key=" ">SPACE</div></div>
+</div>
+
+<button id="restartBtn">Restart</button>
+
+<script src="game.js"></script>
+</body>
+</html>
