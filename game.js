@@ -99,7 +99,7 @@ class Butler {
             const dist = Math.sqrt(dx*dx + dy*dy);
             if(dist>1){ this.x += (dx/dist)*3; this.y += (dy/dist)*3; }
             else {
-                if(this.currentObject==="cutit" || this.currentObject==="pistol"){
+                if(this.currentObject==="knife" || this.currentObject==="GUN"){
                     human.alive=false;
                     game.gameOver=true;
                     restartBtn.style.display="block";
@@ -248,4 +248,5 @@ restartBtn.addEventListener("click", ()=>{
 
 // ===== LOOP =====
 function gameLoop(){ game.update(); game.draw(); requestAnimationFrame(gameLoop); }
+
 gameLoop();
