@@ -134,7 +134,7 @@ class ShadowButler {
 // ==== SHADOW PLAYER ====
 class ShadowPlayer {
     constructor(x,y){ this.x=x; this.y=y; this.radius=15; this.speed=3; this.energy=100; this.inShadow=false; }
-    update(input, centralZone, butler){
+    update(input, centralZone, shadowButler){
         if(input.isDown("w")) this.y-=this.speed;
         if(input.isDown("s")) this.y+=this.speed;
         if(input.isDown("a")) this.x-=this.speed;
@@ -142,16 +142,24 @@ class ShadowPlayer {
         this.x=Math.max(0,Math.min(canvas.width,this.x));
         this.y=Math.max(0,Math.min(canvas.height,this.y));
 
-        const dx=this.x-(butler.x+butler.width/2);
-        const dy=this.y-(butler.y+butler.height/2);
-        const distance=Math.sqrt(dx*dx+dy*dy);
+        // verificare inShadow fata de ShadowButler
+        const dx = this.x-(shadowButler.x + shadowButler.butler.width/2);
+        const dy = this.y-(shadowButler.y + shadowButler.butler.height/2);
+        const distance = Math.sqrt(dx*dx + dy*dy);
+        if(distance<40 && input.isDown(" ")){
+            this.inShadow = true;
+            this.energy -= 0.8;
+            if(shadowButler.butler.state==="attack"){
+                shadowButler.butler.state="normal";
+                shadowButler.butler.timer=0;
+                shadowButler.butler.attackCounter=0;
+            }
+        } else this.inShadow=false;
 
-        if(distance<40 && input.isDown(" ")){ this.inShadow=true; this.energy-=0.8; if(butler.state==="attack"){ butler.state="normal"; butler.timer=0; butler.attackCounter=0; } }
-        else this.inShadow=false;
-
-        if(centralZone.contains(this)) this.energy+=0.5;
-        else if(!this.inShadow) this.energy-=0.2;
-        this.energy=Math.max(0,Math.min(100,this.energy));
+        // energie centrala si scadere
+        if(centralZone.contains(this)) this.energy += 0.5;
+        else if(!this.inShadow) this.energy -= 0.5;
+        this.energy = Math.max(0, Math.min(100,this.energy));
 
         if(this.energy<=0){ game.gameOver=true; restartBtn.style.display="block"; }
     }
@@ -175,7 +183,7 @@ class Game {
         if(this.state!=="playing") return;
         if(this.gameOver) return;
         this.butler.update(this.human,this.shadowPlayer,this);
-        this.shadowPlayer.update(this.input,this.centralZone,this.butler);
+        this.shadowPlayer.update(this.input,this.centralZone,this.shadowButler);
     }
     draw(){
         ctx.clearRect(0,0,canvas.width,canvas.height);
