@@ -12,10 +12,26 @@ body {
     align-items: center;
     height: 100vh;
     position: relative;
+    font-family: Arial, sans-serif;
 }
-canvas {
-    background: #d9d9d9;
-    z-index: 1;
+canvas { background: #d9d9d9; z-index:1; display: none; }
+
+/* MENIU & SHOP & QUESTURI */
+#menu, #shop, #quests {
+    position: absolute;
+    top:50%; left:50%;
+    transform: translate(-50%,-50%);
+    color:white;
+    text-align:center;
+}
+.button-main {
+    padding:15px 30px;
+    font-size:24px;
+    margin:10px;
+    background: #333; color:white;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
 }
 
 /* CONTROALE MOBILE */
@@ -30,45 +46,51 @@ canvas {
     z-index: 2;
     user-select: none;
 }
-.row {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-.button {
-    width: 60px;
-    height: 60px;
-    background: rgba(0,0,0,0.6);
-    color: white;
-    font-size: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    touch-action: none;
-}
+.row { display:flex; justify-content:center; gap:10px; }
+.button { width:60px; height:60px; background: rgba(0,0,0,0.6); color:white; font-size:24px; display:flex; justify-content:center; align-items:center; border-radius:10px; touch-action:none; }
 
 /* BUTON RESTART */
 #restartBtn {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    padding: 20px 40px;
-    font-size: 24px;
-    background: red;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    display: none;
-    z-index: 3;
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    padding:20px 40px; font-size:24px;
+    background:red; color:white; border:none; border-radius:12px;
+    cursor:pointer; display:none; z-index:3;
 }
 </style>
 </head>
 <body>
+
+<!-- MENIU PRINCIPAL -->
+<div id="menu">
+    <h1>Shadow Protocol</h1>
+    <button class="button-main" id="startBtn">Start Game</button>
+    <button class="button-main" id="questsBtn">Questuri</button>
+    <button class="button-main" id="shopBtn">Shop</button>
+    <p>Bani: <span id="coinsDisplay">0</span></p>
+</div>
+
+<!-- SHOP -->
+<div id="shop" style="display:none;">
+    <h2>Shop</h2>
+    <button class="button-main" data-item="shield">Shield - 3 coins</button>
+    <button class="button-main" data-item="magnet">Magnet - 5 coins</button>
+    <br><br>
+    <button class="button-main" id="shopBack">Back</button>
+</div>
+
+<!-- QUESTURI -->
+<div id="quests" style="display:none;">
+    <h2>Questuri</h2>
+    <p>Protejează omul de 3 ori pentru 5 bani!</p>
+    <button class="button-main" id="questsBack">Back</button>
+</div>
+
+<!-- CANVAS JOC -->
 <canvas id="gameCanvas" width="900" height="500"></canvas>
 
+<!-- CONTROALE MOBILE -->
 <div id="mobileControls">
     <div class="row"><div class="button" data-key="w">W</div></div>
     <div class="row">
