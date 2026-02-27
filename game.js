@@ -1,6 +1,7 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const restartBtn = document.getElementById("restartBtn");
+const menuBtn = document.getElementById("menuBtn");
 
 const menu = document.getElementById("menu");
 const startBtn = document.getElementById("startBtn");
@@ -12,10 +13,11 @@ const shopBack = document.getElementById("shopBack");
 const questsBack = document.getElementById("questsBack");
 const coinsDisplay = document.getElementById("coinsDisplay");
 
-let coins = 0;
+let coins = parseInt(localStorage.getItem("coins")) || 0;
 let shieldOwned = false;
 let magnetOwned = false;
-let questProgress = 0;
+let questProgress = parseInt(localStorage.getItem("questProgress")) || 0;
+coinsDisplay.textContent = coins;
 
 // ==== INPUT ====
 class Input {
@@ -85,8 +87,8 @@ class Butler {
             else {
                 if(magnetOwned && (this.currentObject==="knife" || this.currentObject==="gun")){ this.hasObject=false; this.currentObject=null; return; }
                 if(shieldOwned && shadowPlayer.inShadow){ this.hasObject=false; this.currentObject=null; return; }
-                if(this.currentObject==="knife" || this.currentObject==="gun"){ human.alive=false; game.gameOver=true; restartBtn.style.display="block"; }
-                else if(this.currentObject==="drink"){ questProgress++; if(questProgress>=3){ coins+=5; questProgress=0; coinsDisplay.textContent=coins; } }
+                if(this.currentObject==="knife" || this.currentObject==="gun"){ human.alive=false; game.gameOver=true; restartBtn.style.display="block"; menuBtn.style.display="block"; }
+                else if(this.currentObject==="drink"){ questProgress++; if(questProgress>=3){ coins+=5; questProgress=0; coinsDisplay.textContent=coins; localStorage.setItem("coins",coins); localStorage.setItem("questProgress",questProgress); } }
                 this.hasObject=false; this.currentObject=null;
             }
             return;
@@ -111,7 +113,7 @@ class Butler {
             const dx = human.x - this.x;
             const dy = human.y - this.y;
             const dist = Math.sqrt(dx*dx + dy*dy);
-            if(dist < 40){ human.alive=false; game.gameOver=true; restartBtn.style.display="block"; }
+            if(dist < 40){ human.alive=false; game.gameOver=true; restartBtn.style.display="block"; menuBtn.style.display="block"; }
         }
     }
     draw(ctx){
@@ -163,7 +165,13 @@ class ShadowPlayer {
         else if(!this.inShadow) this.energy -= 0.5;
         this.energy = Math.max(0, Math.min(100,this.energy));
 
-        if(this.energy<=0){ game.gameOver=true; restartBtn.style.display="block"; }
+        if(this.energy<=0){ 
+            game.gameOver=true; 
+            restartBtn.style.display="block"; 
+            menuBtn.style.display="block"; 
+            localStorage.setItem("coins", coins);
+            localStorage.setItem("questProgress", questProgress);
+        }
     }
     draw(ctx){ ctx.fillStyle=this.inShadow?"purple":"black"; ctx.beginPath(); ctx.arc(this.x,this.y,this.radius,0,Math.PI*2); ctx.fill(); }
 }
@@ -240,6 +248,8 @@ shopDiv.querySelectorAll("button[data-item]").forEach(btn=>{
         const item = btn.getAttribute("data-item");
         if(item==="shield" && coins>=3){ shieldOwned=true; coins-=3; coinsDisplay.textContent=coins; }
         if(item==="magnet" && coins>=5){ magnetOwned=true; coins-=5; coinsDisplay.textContent=coins; }
+        localStorage.setItem("coins", coins);
+        localStorage.setItem("questProgress", questProgress);
     });
 });
 
@@ -247,9 +257,23 @@ shopDiv.querySelectorAll("button[data-item]").forEach(btn=>{
 restartBtn.addEventListener("click",()=>{
     game = new Game();
     restartBtn.style.display="none";
+    menuBtn.style.display="none";
     canvas.style.display="block";
     menu.style.display="none";
     game.state="playing";
+});
+
+// back to menu
+menuBtn.addEventListener("click", ()=>{
+    canvas.style.display="none";
+    restartBtn.style.display="none";
+    menuBtn.style.display="none";
+
+    coins = parseInt(localStorage.getItem("coins")) || 0;
+    questProgress = parseInt(localStorage.getItem("questProgress")) || 0;
+    coinsDisplay.textContent = coins;
+
+    menu.style.display="block";
 });
 
 // ==== LOOP ====
