@@ -26,7 +26,7 @@ class Input {
 class Bar {
     constructor(x, y, width, height){
         this.x = x; this.y = y; this.width = width; this.height = height;
-        this.objects=["drink","drink","drink","drink","knife","knife","GUN"];
+        this.objects=["drink","drink","drink","drink","knife","knife","gun"];
     }
     draw(ctx){
         ctx.fillStyle="#654321";
@@ -99,7 +99,7 @@ class Butler {
             const dist = Math.sqrt(dx*dx + dy*dy);
             if(dist>1){ this.x += (dx/dist)*3; this.y += (dy/dist)*3; }
             else {
-                if(this.currentObject==="knife" || this.currentObject==="GUN"){
+                if(this.currentObject==="knife" || this.currentObject==="gun"){
                     human.alive=false;
                     game.gameOver=true;
                     restartBtn.style.display="block";
@@ -250,3 +250,4 @@ restartBtn.addEventListener("click", ()=>{
 function gameLoop(){ game.update(); game.draw(); requestAnimationFrame(gameLoop); }
 
 gameLoop();
+
