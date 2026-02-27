@@ -69,7 +69,6 @@ class Butler {
 
         // merge la bar
         if(!this.toBar && !this.hasObject && Math.random()<0.002) this.toBar=true;
-
         if(this.toBar){
             const dx=(this.bar.x+this.bar.width/2)-this.x;
             const dy=(this.bar.y+this.bar.height/2)-this.y;
@@ -84,11 +83,8 @@ class Butler {
             const dist=Math.sqrt(dx*dx+dy*dy);
             if(dist>1){ this.x+=(dx/dist)*3; this.y+=(dy/dist)*3; }
             else {
-                // MAGNET
                 if(magnetOwned && (this.currentObject==="knife" || this.currentObject==="gun")){ this.hasObject=false; this.currentObject=null; return; }
-                // SHIELD
                 if(shieldOwned && shadowPlayer.inShadow){ this.hasObject=false; this.currentObject=null; return; }
-                // atac normal
                 if(this.currentObject==="knife" || this.currentObject==="gun"){ human.alive=false; game.gameOver=true; restartBtn.style.display="block"; }
                 else if(this.currentObject==="drink"){ questProgress++; if(questProgress>=3){ coins+=5; questProgress=0; coinsDisplay.textContent=coins; } }
                 this.hasObject=false; this.currentObject=null;
@@ -108,6 +104,14 @@ class Butler {
             const dx=human.x-this.x; const dy=human.y-this.y;
             const dist=Math.sqrt(dx*dx+dy*dy);
             if(dist>1){ this.x+=(dx/dist)*4; this.y+=(dy/dist)*4; }
+        }
+
+        // atac direct cand e inrage
+        if((this.state==="attack" || this.state==="chase") && human.alive){
+            const dx = human.x - this.x;
+            const dy = human.y - this.y;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            if(dist < 40){ human.alive=false; game.gameOver=true; restartBtn.style.display="block"; }
         }
     }
     draw(ctx){
@@ -142,7 +146,6 @@ class ShadowPlayer {
         this.x=Math.max(0,Math.min(canvas.width,this.x));
         this.y=Math.max(0,Math.min(canvas.height,this.y));
 
-        // verificare inShadow fata de ShadowButler
         const dx = this.x-(shadowButler.x + shadowButler.butler.width/2);
         const dy = this.y-(shadowButler.y + shadowButler.butler.height/2);
         const distance = Math.sqrt(dx*dx + dy*dy);
@@ -156,7 +159,6 @@ class ShadowPlayer {
             }
         } else this.inShadow=false;
 
-        // energie centrala si scadere
         if(centralZone.contains(this)) this.energy += 0.5;
         else if(!this.inShadow) this.energy -= 0.5;
         this.energy = Math.max(0, Math.min(100,this.energy));
