@@ -12,47 +12,55 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    position: relative;
-}
-canvas {
-    background: #d9d9d9;
-    z-index: 1;
 }
 
-/* ===== MENU ===== */
+/* CANVAS */
+canvas {
+    background: #d9d9d9;
+}
+
+/* MENU */
 #menu {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #111;
+    width: 300px;
+    height: 200px;
+    background: rgba(0,0,0,0.8);
+    color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 5;
+    gap: 20px;
+    border-radius: 15px;
 }
-#menu h1 {
-    color: white;
-    font-size: 50px;
-}
+
 #menu button {
-    padding: 15px 40px;
-    font-size: 22px;
-    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
     cursor: pointer;
 }
 
-/* ===== BUTTONS ===== */
+/* BUTTONS */
+#shopBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
 #menuBtn {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 10px;
+    left: 10px;
+    padding: 10px 15px;
+    cursor: pointer;
     display: none;
-    z-index: 4;
 }
+
 #restartBtn {
     position: absolute;
-    top: 60%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
     padding: 20px 40px;
@@ -60,13 +68,12 @@ canvas {
     background: red;
     color: white;
     border: none;
-    border-radius: 12px;
-    cursor: pointer;
+    border-radius: 10px;
     display: none;
-    z-index: 4;
+    cursor: pointer;
 }
 
-/* ===== MOBILE CONTROLS ===== */
+/* MOBILE CONTROLS */
 #mobileControls {
     position: absolute;
     bottom: 20px;
@@ -75,19 +82,20 @@ canvas {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    z-index: 2;
 }
+
 .row {
     display: flex;
-    justify-content: center;
     gap: 10px;
+    justify-content: center;
 }
+
 .button {
     width: 60px;
     height: 60px;
     background: rgba(0,0,0,0.6);
     color: white;
-    font-size: 24px;
+    font-size: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -98,27 +106,36 @@ canvas {
 
 <body>
 
-<canvas id="gameCanvas" width="900" height="500"></canvas>
-
 <!-- MENU -->
 <div id="menu">
-    <h1>Shadow Protocol</h1>
+    <h2>Shadow Protocol</h2>
     <button id="playBtn">Play</button>
 </div>
 
+<!-- CANVAS -->
+<canvas id="gameCanvas" width="900" height="500"></canvas>
+
+<!-- BUTTONS -->
+<button id="shopBtn">Shop</button>
 <button id="menuBtn">Menu</button>
 <button id="restartBtn">Restart</button>
 
+<!-- MOBILE CONTROLS -->
 <div id="mobileControls">
-    <div class="row"><div class="button" data-key="w">W</div></div>
+    <div class="row">
+        <div class="button" data-key="w">W</div>
+    </div>
     <div class="row">
         <div class="button" data-key="a">A</div>
         <div class="button" data-key="s">S</div>
         <div class="button" data-key="d">D</div>
     </div>
-    <div class="row"><div class="button" data-key=" ">SPACE</div></div>
+    <div class="row">
+        <div class="button" data-key=" ">SPACE</div>
+    </div>
 </div>
 
+<!-- SCRIPT -->
 <script src="game.js"></script>
 
 </body>
